@@ -53,5 +53,4 @@ public class BoardVO {
 				+ content + ", writer=" + writer + ", regdate=" + regdate
 				+ ", viewcnt=" + viewcnt + "]";
 	}
-
 }
