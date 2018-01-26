@@ -2,7 +2,6 @@ package org.zerock.test;
 
 import javax.inject.Inject;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ public class BoardDAOTest {
 
     BoardVO board = new BoardVO();
     board.setTitle("새로운 글을 넣습니다. ");
-    board.setContents("새로운 글을 넣습니다. ");
+    board.setContent("새로운 글을 넣습니다. ");
     board.setWriter("user00");
     dao.create(board);
   }
@@ -41,7 +40,7 @@ public class BoardDAOTest {
     BoardVO board = new BoardVO();
     board.setBno(1);
     board.setTitle("수정된 글입니다.");
-    board.setContents("수정 테스트 ");
+    board.setContent("수정 테스트 ");
     dao.update(board);
   }
 

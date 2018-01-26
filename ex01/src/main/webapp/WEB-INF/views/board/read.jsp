@@ -24,7 +24,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                        <label for="exampleInputPassword1">Contents</label>
-	                        <textarea name="contents" class="form-control" rows="3" readonly="readonly">${boardVO.contents}</textarea>
+	                        <textarea name="contents" class="form-control" rows="3" readonly="readonly">${boardVO.content}</textarea>
 	                    </div>
 	                    <div class="form-group">
 	                        <label for="exampleInputEmail1">Writer</label>
