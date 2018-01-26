@@ -2,6 +2,7 @@ package org.zerock.test;
 
 import javax.inject.Inject;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class BoardDAOTest {
 
   @Test
   public void testRead() throws Exception {
-    logger.info(dao.read(4).toString());
+    logger.info(dao.read(1).toString());
   }
 
   @Test
@@ -46,6 +47,6 @@ public class BoardDAOTest {
 
   @Test
   public void testDelete() throws Exception {
-    dao.delete(6);
+    dao.delete(1);
   }
 }
