@@ -31,6 +31,6 @@
 	<context:component-scan base-package="org.zerock.persistence"></context:component-scan>
 	<context:component-scan base-package="org.zerock.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.aop"></context:component-scan>
-	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	<aop:config></aop:config>
 </beans>
