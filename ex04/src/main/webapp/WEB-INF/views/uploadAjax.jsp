@@ -35,13 +35,9 @@
 				event.preventDefault();
 				
 				var files = event.originalEvent.dataTransfer.files;
-				
 				var file = files[0];
-				
-// 				console.log(file);
-				
+				console.log(file);
 				var formData = new FormData();
-				
 				formData.append("file", file);
 				
 				$.ajax({
@@ -52,10 +48,48 @@
 					, contentType: false
 					, type: "POST"
 					, success: function(data) {
-						alert(data);
+// 						alert(data);
+						var str = "";
+						
+						console.log(data);
+						console.log(checkImageType(data));
+						
+						if(checkImageType(data)){
+							str = "<div>"
+								+ "<a href='displayFile?fileName=" + getImageLink(data) + "'>"
+								+ "<img src='displayFile?fileName=" + data + "'/>"
+								+ getImageLink(data) + "</a></div>";
+						} else {
+							str ="<div><a href='displayFile?fileName=" + data + "'>"
+								+ getOriginalName(data)
+								+ "</a></div>";
+						}
+						$(".uploadedList").append(str);
 					}
 				});
 			});
+			
+			function checkImageType(fileName) {
+				var pattern = /jpg$|gif$|png$|jpg$/i;
+				return fileName.match(pattern);
+			}
+			
+			function getOriginalName(fileName) {
+				if(checkImageType(fileName)) {
+					return;
+				}
+				var idx = fileName.indexOf("_") + 1;
+				return fileName.substr(idx);
+			}
+			
+			function getImageLink(fileName) {
+				if(!checkImageType(fileName)) {
+					return;
+				}
+				var front = fileName.substr(0, 12);
+				var end = fileName.substr(14);
+				return front + end;
+			}
 		</script>
 	</body>
 </html>
