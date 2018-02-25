@@ -2,6 +2,8 @@
 
 <%@include file="../include/header.jsp"%>
 
+	<script type="text/javascript" src="/resources/js/upload.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<style>
 		.fileDrop {
 		  width: 80%;
@@ -70,8 +72,6 @@
 </div>
 <!-- /.content-wrapper -->
 
-	<script type="text/javascript" src="/resources/js/upload.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script id="template" type="text/x-handlebars-template">
 		<li>
 			<span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>

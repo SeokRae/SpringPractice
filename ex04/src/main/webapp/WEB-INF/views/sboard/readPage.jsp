@@ -2,7 +2,26 @@
 
 <%@include file="../include/header.jsp" %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style type="text/css">
+    .popup {position: absolute;}
+    .back { background-color: gray; opacity:0.5; width: 100%; height: 300%; overflow:hidden;  z-index:1101;}
+    .front { 
+       z-index:1110; opacity:1; boarder:1px; margin: auto; 
+      }
+     .show{
+       position:relative;
+       max-width: 1200px; 
+       max-height: 800px; 
+       overflow: auto;       
+     } 
+  	
+    </style>
 
+	<div class="popup back" style="display:none;"></div>
+	<div id="popup_front" class="popup front" style="display:none;">
+		<img id="popup_img">
+	</div>
+	
 	<!-- Main contents -->
 	<section class="contents">
 	    <div class="row">
@@ -33,6 +52,8 @@
 	                        <input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly" />
 	                    </div>
 	                </div>
+	                
+	                <ul class="mailbox-attachments clearfix uploadedList"></ul>
 	                
 	                <div class="box-footer">
 					    <button type="submit" class="btn btn-warning"	id="modifyBtn">Modify</button>
@@ -67,6 +88,7 @@
 	    				<input class="form-control" type="text" placeholder="REPLY TEXT" id="newReplyText">
 	    			</div>
 	    			<!--  /.box-body -->
+	    			
 	    			<div class="box-footer">
 	    				<button type="submit" class="btn btn-primary" id="replyAddBtn">ADD REPLY</button>
 	    			</div>
@@ -81,9 +103,7 @@
 	    			</li>
 	    		</ul>
 	    		<div class="text-center">
-	    			<ul id="pagination" class="pagination pagination-sm no-margin">
-	    			
-	    			</ul>
+	    			<ul id="pagination" class="pagination pagination-sm no-margin"></ul>
 	    		</div>
 	    		<!-- /.text-center -->
 	    	</div>
@@ -118,22 +138,29 @@
 	<!-- /.contents -->
 </div>
 <!-- /.contents-wrapper -->
+<script id="templateAttach" type="text/x-handlebars-template">
+<li data-src="{{fullName}}">
+	<span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment></span>
+	<div class="mailbox-attachment-info">
+		<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	</div>
+</li>
+</script>
 
 <script id="template" type="text/x-handlebars-template">
 {{#each .}}
 <li class="replyLi" data-rno={{rno}}>
-<i class="fa fa-comments bg-blue"></i>
- <div class="timeline-item" >
-  <span class="time">
-    <i class="fa fa-clock-o"></i>{{prettifyDate regdate}}
-  </span>
-  <h3 class="timeline-header"><strong>{{rno}}</strong> -{{replyer}}</h3>
-  <div class="timeline-body">{{replytext}} </div>
-    <div class="timeline-footer">
-     <a class="btn btn-primary btn-xs" 
-	    data-toggle="modal" data-target="#modifyModal">Modify</a>
-    </div>
-  </div>			
+	<i class="fa fa-comments bg-blue"></i>
+	<div class="timeline-item">
+		<span class="time">
+			<i class="fa fa-clock-o"></i> {{prettifyDate regdate}}
+		</span>
+		<h3 class="timeline-header"><strong>{{rno}}</strong> -{{replyer}}</h3>
+		<div class="timeline-body">{{replytext}} </div>
+		<div class="timeline-footer">
+			<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal">Modify</a>
+		</div>
+	</div>
 </li>
 {{/each}}
 </script>
@@ -274,27 +301,6 @@
 		});
 	});
 	
-    $(document).ready(function () {
-        var formObj = $("form[role='form']");
-        console.log(formObj);
-
-        $("#goListBtn").on("click", function () {
-        	formObj.attr("method", "get");
-        	formObj.attr("action", "/sboard/list");
-        	formObj.submit();
-        });
-        $("#removeBtn").on("click", function () {
-        	formObj.attr("action", "/sboard/removePage");
-        	formObj.submit();
-        });
-        $("#modifyBtn").on("click", function () {
-        	formObj.attr("action", "/sboard/modifyPage");
-        	formObj.attr("method", "get");
-        	formObj.submit();
-        });
-        
-    });
-    
     function getPage(pageInfo) {
     	$.getJSON(pageInfo, function(data) {
     		printData(data.list, $("#repliesDiv"), $("#template"));
@@ -304,5 +310,78 @@
     		$("#replycntSmall").html("[ " + data.pageMaker.totalCount + " ]");
     	});
     }
+    
 </script>
+<script>
+$(document).ready(function () {
+    var formObj = $("form[role='form']");
+    console.log(formObj);
+
+    $("#goListBtn").on("click", function () {
+    	formObj.attr("method", "get");
+    	formObj.attr("action", "/sboard/list");
+    	formObj.submit();
+    });
+	$("#removeBtn").on("click", function(){
+		
+		var replyCnt =  $("#replycntSmall").html();
+		
+		if(replyCnt > 0 ){
+			alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
+			return;
+		}	
+		
+		var arr = [];
+		$(".uploadedList li").each(function(index){
+			 arr.push($(this).attr("data-src"));
+		});
+		
+		if(arr.length > 0){
+			$.post("/deleteAllFiles",{files:arr}, function(){
+				
+			});
+		}
+		
+		formObj.attr("action", "/sboard/removePage");
+		formObj.submit();
+	});	
+    $("#modifyBtn").on("click", function () {
+    	formObj.attr("action", "/sboard/modifyPage");
+    	formObj.attr("method", "get");
+    	formObj.submit();
+    });
+    
+});
+var bno = ${boardVO.bno};
+var template = Handlebars.compile($("#templateAttach").html());
+
+$.getJSON("/sboard/getAttach/" + bno, function(list){
+	$(list).each(function(){
+		var fileInfo = getFileInfo(this);
+		var html = template(fileInfo);
+		$(".uploadedList").append(html);
+	});
+});
+
+$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+	var fileLink = $(this).attr("href");
+	
+	if(checkImageType(fileLink)){
+		event.preventDefault();
+		
+		var imgTag = $("#popup_img");
+		imgTag.attr("src", fileLink);
+		
+		console.log(imgTag.attr("src"));
+		
+		$(".popup").show("slow");
+		imgTag.addClass("show");
+	}
+});
+
+$("#popup_img").on("click", function(){
+	$(".popup").hide("slow");
+});
+</script>
+
 <%@include file="../include/footer.jsp" %>
