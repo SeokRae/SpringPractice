@@ -11,7 +11,6 @@
 		  border: 1px dotted gray;
 		  background-color: lightslategrey;
 		  margin: auto;
-		  
 		}
 	</style>
 
@@ -27,7 +26,7 @@
 					</div>
 					<!-- /.box-header -->
 	
-					<form role="form" method="post">
+					<form id="registerForm" role="form" method="post">
 						<div class="box-body">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Title</label> <input type="text"
@@ -54,9 +53,9 @@
 								<hr>
 							</div>
 					
-							<ul class="mailbox-attachments clearfix uploadedList">
-							</ul>
+							<ul class="mailbox-attachments clearfix uploadedList"></ul>
 							<button type="submit" class="btn btn-primary">Submit</button>
+							<button type="submit" class="btn btn-primary" id="goListBtn">GO LIST </button>
 						</div>
 					</form>
 	
@@ -132,4 +131,16 @@
 		});
 	</script>
 
+	<script>
+		$(document).ready(function () {
+		    var formObj = $("form[role='form']");
+		    console.log(formObj);
+	
+		    $("#goListBtn").on("click", function () {
+		    	formObj.attr("method", "get");
+		    	formObj.attr("action", "/sboard/list");
+		    	formObj.submit();
+		    });
+		});
+	</script>
 <%@include file="../include/footer.jsp"%>
