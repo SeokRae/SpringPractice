@@ -145,7 +145,6 @@
 			});	
 	});
 	
-	
 	$(".uploadedList").on("click", ".delbtn", function(event){
 		
 		event.preventDefault();
