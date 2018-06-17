@@ -2,10 +2,14 @@
 <beansProjectDescription>
 	<version>1</version>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<pluginVersion><![CDATA[3.9.2.201712210913-RELEASE]]></pluginVersion>
 =======
 	<pluginVersion><![CDATA[2.5.0.201010141000-RC1]]></pluginVersion>
 >>>>>>> develop
+=======
+	<pluginVersion><![CDATA[3.9.2.201712210913-RELEASE]]></pluginVersion>
+>>>>>>> Part6_interceptor
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -13,10 +17,15 @@
 	<configs>
 	</configs>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<autoconfigs>
 	</autoconfigs>
 =======
 >>>>>>> develop
+=======
+	<autoconfigs>
+	</autoconfigs>
+>>>>>>> Part6_interceptor
 	<configSets>
 	</configSets>
 </beansProjectDescription>
