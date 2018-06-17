@@ -36,26 +36,30 @@
 	</beans:bean>
 
 	<beans:bean id="sampleInterceptor" class="org.zerock.interceptor.SampleInterceptor"></beans:bean>
+	<beans:bean id="loginInterceptor" class="org.zerock.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" class="org.zerock.interceptor.AuthInterceptor"></beans:bean>
 
+	<!-- 인터셉터의 설정을 위한 태그 -->
 	<interceptors>
+		<!-- 테스트를 위해 작성, SampleInterceptor를 스프링에서 인식을 위한 설정 -->
 		<interceptor>
 			<mapping path="/doA" />
 			<mapping path="/doB" />
 			<beans:ref bean="sampleInterceptor" />
 		</interceptor>
-	</interceptors>
-
-	<beans:bean id="loginInterceptor" class="org.zerock.interceptor.LoginInterceptor"></beans:bean>
-	<beans:bean id="authInterceptor" class="org.zerock.interceptor.AuthInterceptor"></beans:bean>
-
-	<interceptors>
+		
 		<interceptor>
 			<mapping path="/user/loginPost" />
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
+	
 		<interceptor>
 			<mapping path="/sboard/register"/>
+			<mapping path="/sboard/modifyPage"/>
+			<mapping path="/sboard/removePage"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
-	</interceptors>	
+	</interceptors>
+
+	
 </beans:beans>
