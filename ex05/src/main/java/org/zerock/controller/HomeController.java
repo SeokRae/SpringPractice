@@ -16,24 +16,38 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
+
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+
 		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
+
+		model.addAttribute("serverTime", formattedDate);
+
 		return "home";
 	}
-	
+
+	@RequestMapping(value = "/doA", method = RequestMethod.GET)
+	public String doA(Locale locale, Model model) {
+		System.out.println("doA ....");
+		return "home";
+	}
+
+	@RequestMapping(value = "/doB", method = RequestMethod.GET)
+	public String doB(Locale locale, Model model) {
+		System.out.println("doB ....");
+		// home.jsp에서는 Model 객체에서 전달된 객체는 없지만, 
+		// HttpSession 객체에 필요한 정보가 보관되었기에 EL의 문법을 이용하여 화면에 문자열이 보여지게 된다.
+		model.addAttribute("result", "doB Result");
+		return "home";
+	}
 }

@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+			console.log("loginPost")
 			self.location = "/sboard/list";
 		</script>
 	</body>
